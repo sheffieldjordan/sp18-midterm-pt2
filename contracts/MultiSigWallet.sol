@@ -1,4 +1,4 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.18;
 
 contract MultiSigWallet {
     address public _owner;
@@ -54,7 +54,7 @@ contract MultiSigWallet {
 
     /// @dev Fallback function, which accepts ether when sent to contract
     function () public payable {
-        emit DepositFunds(msg.sender, msg.value);
+        DepositFunds(msg.sender, msg.value);
     }
 
     function withdraw(uint amount) public payable { // what is this function for?
@@ -87,7 +87,7 @@ contract MultiSigWallet {
         _transactionIndex += 1;
 
       //log that the transaction was created to a specific address
-        emit TransactionCreated(transaction.source, transaction.destination, transaction.value, _transactionIndex);
+        TransactionCreated(transaction.source, transaction.destination, transaction.value, _transactionIndex);
 
     }
 
@@ -111,14 +111,14 @@ contract MultiSigWallet {
         // transaction = 1;
 
         transaction.signatureCount += 1; // increment signatureCount
-        emit TransactionSigned(msg.sender, transactionId); // log transaction
+        TransactionSigned(msg.sender, transactionId); // log transaction
 
         //  check to see if transaction has enough signatures so that it can actually be completed
         // if true, make the transaction. Don't forget to log the transaction was completed.
         if (transaction.signatureCount >= MIN_SIGNATURES) {
             require(address(this).balance >= transaction.value); //validate transaction
             transaction.destination.transfer(transaction.value);
-            emit TransactionCompleted(transaction.source, transaction.destination, transaction.value, transactionId);
+             TransactionCompleted(transaction.source, transaction.destination, transaction.value, transactionId);
             deleteTransaction(transactionId);
 
         } else {

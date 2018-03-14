@@ -71,7 +71,10 @@ class App extends Component {
 			if (error) {
 				console.log(error)
 			} else {
-				that.setState({ events: result })
+				var eventsList = this.state.events.slice()
+				eventsList.push(result.event)
+				that.setState({ events: result.eventsList })
+
 				/// YOUR CODE HERE -- what do we need to do if we want to log a component?
 				/// 'result.event' will give you the event itself, so try adding that to the
 				/// list of events we are tracking in the state object. REMEMBER TO USE 'that'
@@ -84,7 +87,10 @@ class App extends Component {
 			if (error) {
 				console.log(error)
 			} else {
-				that.setState({ events: result })
+				var eventsList = that.state.events.slice()
+				eventsList.push(result.event)
+
+				that.setState({ events: result.eventsList })
 			}
 		})
 
@@ -92,7 +98,9 @@ class App extends Component {
 			if (error) {
 				console.log(error)
 			} else {
-				that.setState({ events: result })
+				var eventsList = that.state.events.slice()
+				eventsList.push(result.event)
+				that.setState({ events: result.eventsList })
 			}
 		})
 
@@ -100,7 +108,10 @@ class App extends Component {
 			if (error) {
 				console.log(error)
 			} else {
-				that.setState({ events: result })
+				var eventsList = that.state.events
+				eventsList.push(result.event)
+
+				that.setState({ events: result.eventsList })
 			}
 		})
 	}
@@ -112,7 +123,14 @@ class App extends Component {
 	sendEther = async (event) => {
 		event.preventDefault()
 		try {
-			await this.state.web3.eth.sendTransaction({})
+			await this.state.web3.eth.sendTransaction(
+				{
+					from: '0x68009930d2e4a9a0a4b53484aed8289c86802ae5'
+				},
+				function(res) {
+					console.log(res)
+				}
+			)
 		} catch (err) {
 			this.setState({ errorMessage: err.message })
 		}
